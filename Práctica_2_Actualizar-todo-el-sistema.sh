@@ -11,28 +11,24 @@ turquoiseColour="\e[0;36m\033[1m"
 grayColour="\e[0;37m\033[1m"
 # Script para actualizar el Sistema Operativo
 
-echo -e "${blueColour}[+] Iniciando todas las actualizaciones:${endColour}"
+echo "\n ${blueColour}[+] Iniciando todas las actualizaciones:${endColour}"
 
-echo -e "${blueColour}[+] Iniciando el update:${endColour}"
+echo "\n ${blueColour}[+] Iniciando el Update:${endColour}"
 
 sudo apt update
 
-echo -e "${blueColour}[+] Iniciando el upgrade:${endColour}"
+echo "\n ${blueColour}[+] Iniciando el Upgrade:${endColour}"
 
 sudo apt upgrade -y
 
-echo -e "${blueColour}[+] Iniciando el autoremove:${endColour}"
+echo "\n ${blueColour}[+] Iniciando el Autoremove:${endColour}"
 
 sudo apt autoremove
 
-echo -e "${blueColour}[+] Actualizando Flatpak:${endColour}"
+echo "\n ${blueColour}[+] Actualizando Flatpak:${endColour}"
 
-flatpak update
-
-echo -e "${blueColour}[+] Actualizando paquetes Snap:${endColour}"
-
-snap refresh
+sudo flatpak update
 
 # Mostrar un mensaje al finalizar el script.
 
-echo -e "\n ${blueColour}[+] Se han realizado todas las actualizaciones. ${endColour}"
+echo "\n ${blueColour}[+] Se han realizado todas las Actualizaciones. ${endColour}"
