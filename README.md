@@ -3,6 +3,6 @@
 Ejemplos y ejercicios de Bash Scripting.
 
 ## Práctica 1 : --> ¡¡Hola Mundo!!      
-## Práctica 2 --> ¿Cual es mi Ip?
-## Práctica 3 --> Descompresor de Archivos
-## Práctica 4 --> Actualizador del SO
+## Práctica 2 --> Actualizador del SO
+## Práctica 3 --> ¿Cual es mi Ip?
+## Práctica 4 --> Descompresor de Archivos
