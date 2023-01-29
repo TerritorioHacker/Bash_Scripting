@@ -10,7 +10,9 @@ purpleColour="\e[0;35m\033[1m"
 turquoiseColour="\e[0;36m\033[1m"
 grayColour="\e[0;37m\033[1m"
 
-miIp="$(ip a | grep eth0 | tail -n 1 | awk '{print $2}' | awk '{print $1}' FS='/')"
+miIpPrivada="$(ip a | grep eth0 | tail -n 1 | awk '{print $2}' | awk '{print $1}' FS='/')"
+miIpPublica="$(curl ifconfig.me)"
 
-echo -e "\n ${redColour}¿Cual es mi Ip?${endColour} \n \n ${greenColour}[+]${endColour} Esta es tu direccion Ip -->${greenColour} ${miIp} ${endColour} \n"
-
+echo -e "\n ${greenColour}[+] ¿Cual es mi Ip?${endColour} \n"
+echo -e "\n ${greenColour}[+]${endColour} Esta es tu direccion Ip Privada: -->${greenColour} ${miIpPrivada} ${endColour}"
+echo -e " ${greenColour}[+]${endColour} Esta es tu direccion Ip Pública: -->${greenColour} ${miIpPublica} ${endColour} \n"
