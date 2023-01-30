@@ -16,3 +16,13 @@ miIpPublica="$(curl ifconfig.me)"
 echo -e "\n ${greenColour}[+] ¿Cual es mi Ip?${endColour} \n"
 echo -e "\n ${greenColour}[+]${endColour} Esta es tu direccion Ip Privada: -->${greenColour} ${miIpPrivada} ${endColour}"
 echo -e " ${greenColour}[+]${endColour} Esta es tu direccion Ip Pública: -->${greenColour} ${miIpPublica} ${endColour} \n"
+
+
+
+# ip a : Muestra información sobre todas las interfaces de red.
+# grep : Busca una palabra o patrón y se imprimirá la línea o líneas que la contengan.
+# tail -n 1 : Imprime los últimos N números de una entrada.
+# awk '{print $2}' : Imprime el segundo argumento.  
+# awk '{print $1}' FS'/' : Imprime el primer argumento teniendo como delimitador el /.
+
+
