@@ -9,3 +9,4 @@ Ejemplos y ejercicios de Bash Scripting.
 ## Práctica 5 --> Verificador de Conexiones
 ## Práctica 6 --> Ejemplo 1: BUCLE FOR
 ## Práctica 7 --> Ejemplo 2: BUCLE FOR
+## Práctica 8 --> Igual, Mayor o Menor
