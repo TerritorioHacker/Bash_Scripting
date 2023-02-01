@@ -11,5 +11,5 @@ Ejemplos y ejercicios de Bash Scripting.
 ## Práctica 7 --> Ejemplo 2: BUCLE FOR
 ## Práctica 8 --> Igual, Mayor o Menor
 ## Práctica 9 --> Automatización básica de Nmap.
-
+## Práctica 10 --> Fase de Reconocimiento 2.0
 
