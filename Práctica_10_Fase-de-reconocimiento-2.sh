@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Creación de directorios de trabajo, reporte de Ip, Puertos Abiertos, escaneo y automatización de Nmap y Whatweb.
+
 # Sintaxis: ./script.sh [Nombre del Laboratorio] [Dirección]
 #       Ej: ./script.sh Machine 10.10.10.10
 #       Ej: ./script.sh Prueba www.prueba.com
