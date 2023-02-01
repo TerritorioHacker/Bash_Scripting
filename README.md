@@ -1,8 +1,8 @@
 # Bash_Scripting
 
-Ejemplos y ejercicios de Bash Scripting.
+Ejemplos y ejercicios de Bash Scripting
 
-## Práctica 1 --> ¡¡Hola Mundo!!      
+## [Práctica 1 --> ¡¡Hola Mundo!!](./Prática_1_Hola-Mundo.sh)      
 ## Práctica 2 --> Actualizador del SO
 ## Práctica 3 --> ¿Cual es mi Ip?
 ## Práctica 4 --> Fase de Reconocimiento
