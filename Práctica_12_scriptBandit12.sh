@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# cat data | xxd -r | sponge data.gz
+cat data | xxd -r | sponge data.gz
 
 function ctrl_c(){
     echo -e "\n\n [!] Saliendo... \n"
