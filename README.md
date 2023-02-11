@@ -13,4 +13,4 @@ Ejemplos y ejercicios de Bash Scripting
 ## [Práctica 9 --> Automatización básica de Nmap.](https://github.com/TerritorioHacker/Bash_Scripting/blob/main/Pr%C3%A1ctica_9_autoNmap.sh)
 ## [Práctica 10 --> Fase de Reconocimiento 2.0](https://github.com/TerritorioHacker/Bash_Scripting/blob/main/Pr%C3%A1ctica_10_Fase-de-reconocimiento-2.sh)
 ## [Práctica 11 --> Conexión automática con OverTheWire](https://github.com/TerritorioHacker/Bash_Scripting/blob/main/Pr%C3%A1ctica_11_autoConnectOverTheWire.sh)
-## [Práctica 12 --> Descompresor de Archivos OverTheWireBandit12
+## [Práctica 12 --> Descompresor de Archivos OverTheWireBandit12](https://github.com/TerritorioHacker/OverTheWire_Bandit/blob/main/scriptBandit12.sh)
