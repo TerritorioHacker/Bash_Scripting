@@ -14,3 +14,4 @@ Ejemplos y ejercicios de Bash Scripting
 ## [Práctica 10 --> Fase de Reconocimiento 2.0](https://github.com/TerritorioHacker/Bash_Scripting/blob/main/Pr%C3%A1ctica_10_Fase-de-reconocimiento-2.sh)
 ## [Práctica 11 --> Conexión automática con OverTheWire](https://github.com/TerritorioHacker/Bash_Scripting/blob/main/Pr%C3%A1ctica_11_autoConnectOverTheWire.sh)
 ## [Práctica 12 --> Descompresor de Archivos OverTheWireBandit12](https://github.com/TerritorioHacker/Bash_Scripting/blob/main/Pr%C3%A1ctica_12_scriptBandit12.sh)
+## [Práctica 13 --> Ecaner Básico Interno de Puertos Abiertos](https://github.com/TerritorioHacker/Bash_Scripting/blob/main/Pr%C3%A1ctica_13_Escaner-b%C3%A1sico-de-puertos-abiertos.sh) 
