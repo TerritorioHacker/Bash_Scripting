@@ -12,50 +12,172 @@ gris="\e[0;37m\033[1m"
 
 # Variables
 ip="$1"
+name="$2"
 validation=$(ping -c 1 $ip | grep received | awk '{print $4}')
 
+# Estado de la Conexión
 if [ $validation -eq 1 ]; then
-    echo -e "\n${verde}[+] Conectado"
+    echo -e "\n${verde}[+] Estado de la conexión: ${azul}Conectado${finColor}${verde}"
+
+    # Reporte de sistema operativo
     so="$(wichSystem.py $ip | awk '{print $5}' | column)"
     
     if [[ $so = "Linux" || $so = "Windows" ]]; then
-        echo -e "\n[+] Sistema Operativo = ${azul}$so${finColor}${verde} \n"
+        echo -e "\n[+] Sistema Operativo = ${azul}$so${finColor}${verde}"
     else
-        echo -e "\n[+] Sistema Operativo Desconocido. \n"
+        echo -e "\n[+] Sistema Operativo Desconocido."
     fi
 
-    echo -e "[+] Escaneando puertos abiertos: \n"
-   
-    # Escaneo básico con Nmap:    
-    sudo nmap -p- -sS --open --min-rate 5000 -v -n $ip -oG portScan 2&>/dev/null
-    echo -e "[+] Archivo ${azul}portScan${finColor}${verde} creado."
-    ports="$(cat portScan | grep -oP '\d{1,5}/open' | awk '{print $1}' FS='/' | xargs | tr ' ' ',')" 
-    echo -e "\n[+] Puertos abiertos: ${azul}$ports${finColor}${azul} \n"
+    # Nmpa - En caso de que portScan exista ya o no.
+
+    echo -e "\n[+] Ecaneando archivos con Nmap:"
+
+    if [ -e "./portScan" ]; then 
+        echo -e "\n    [+] El archivo ${azul}portScan${verde} ya existe, desea volver a realizar el Escaneo? [s/n]"
+        read respuesta
+        if [ "$respuesta" = "s" ]; then
+            echo -e "\n    [+] Escaneando puertos abiertos:"
+
+            # Escaneo básico con Nmap:    
+            sudo nmap -p- -sS --open --min-rate 5000 -v -n $ip -oG portScan 2&>/dev/null
+            echo -e "\n    [+] Archivo ${azul}portScan${finColor}${verde} creado."
+        else
+            echo -e "\n    [+] Ecaneo no realizado."
+        fi        
+    else
+        echo -e "\n    [+] Escaneando puertos abiertos:"
+
+        # Escaneo básico con Nmap:    
+        sudo nmap -p- -sS --open --min-rate 5000 -v -n $ip -oG portScan 2&>/dev/null
+        echo -e "\n    [+] Archivo ${azul}portScan${finColor}${verde} creado."
+    fi
     
+    ports="$(cat portScan | grep -oP '\d{1,5}/open' | awk '{print $1}' FS='/' | xargs | tr ' ' ',')" 
+    echo -e "\n    [+] Puertos abiertos: ${azul}$ports${finColor}${verde}"
+
+    if [ -e "./infoScan" ]; then
+        echo -e "\n    [+] El archivo ${azul}infoScan${verde} ya existe, desea volver a realizar el Escaneo? [s/n]"
+        read respuesta
+        if [ "$respuesta" = "s" ]; then
+            echo -e "\n    [+] Escaneando puertos abiertos: \n"
+            # Ecaneo de puertos abiertos con Nmap:
+            nmap -sC -sV -n -v -p $ports $ip -oN infoScan 2&>/dev/null
+            targed=$(cat infoScan | sed -n '6,$p' | head -n -3)
+        fi
+    else
     # Ecaneo de puertos abiertos con Nmap:
     nmap -sC -sV -n -v -p $ports $ip -oN infoScan 2&>/dev/null
-    targed=$(cat infoScan | sed -n '6,$p' | head -n -5)
-    echo -e "$targed \n"
+    targed=$(cat infoScan | sed -n '6,$p' | head -n -3)
+    fi
+    targed=$(cat infoScan | sed -n '6,$p' | head -n -3)
+    
+    echo -e "\n    [+] Quíeres ver el archivo ${azul}infoScan${verde} [s/n]" 
+    read respuesta1    
+    if [ "$respuesta1" = "s" ]; then
+            echo -e "${azul}$targed${verde} \n"
+   fi
+
+    # Información por puertos encontrados:
+    # Puerto 21
+    if [[ "$ports" == *"21"* ]]; then
+        echo -e "\n${verde}[+] Analizando Puerto ${azul}21 ftp${finColor}${verde} encontrado: \n"
+        sudo ftp $ip
+    fi
    
-    # Información por puertos encontrados: 
-    if [[ "$ports" == *"80"* ]]; then
-        echo -e "\n${finColor}${verde}[+] Analizando Puerto ${azul}80 http${finColor}${verde} encontrado: \n"
-        whatweb "$ip"
-        echo -e "\n${verde}[+] Analizando Puerto ${azul}80 http${finColor}${verde} encontrado: \n"
-
-
-        wfuzz -w /usr/share/wordlists/directory-list-2.3-big.txt --hc 404 http://$ip/FUZZ.php
-
-
-        if [[ "$ports" == *"443"* ]]; then
-            echo -e "\n${verde}[+] Analizando Puerto ${azul}443 http${finColor}${verde} encontrado:"
-            whatweb "$ip"
+    # Puerto 22
+    if [[ "$ports" == *"22"* ]]; then
+        echo -e "\n${verde}[+] Analizando Puerto ${azul}22 ssh${finColor}${verde} encontrado: \n"
+        echo -e "\n${verde}[+] Establecer conexión ${azul}ftp${finColor}${verde}? [s/n] \n"
+        read respuesta
+        if [ "$respuesta" = "s" ]; then
+            sudo ftp $ip
         fi
-    elif [[ "$ports" == *"443"* ]]; then
-        echo -e "\n${verde}[+] Analizando Puerto ${azul}443 http${finColor}${verde} encontrado:"
-        whatweb "$ip"
     fi
 
+    # Puerto 80 
+    if [[ "$ports" == *"80"* ]]; then
+        echo -e "\n${finColor}${verde}[+] Analizando Puerto ${azul}80 http${finColor}${verde} encontrado: \n"
+        # Whatweb Ip
+        sudo whatweb "$ip"
+        sudo whatweb "$ip" > whatweb
+        report=$?
+
+        if [ $report -eq "0"  ]; then
+            # SearchExploit
+            echo -e "\n${verde}[+] Realizar Búsqueda de Exploits con ${azul}Searchsploit${finColor}${verde}? [s/n] \n"
+            read respuesta
+            if [ "$respuesta" = "s" ]; then
+                cat whatweb | awk '{ for(i=1; i<=NF; i++) print $i }' | strings | sed -E 's/\[([0-9;]+m)//g' | tr -d '[' | tr -d ']' | tr -d ',' | tr -s ' ' '\n' | tr -s '/' ' ' > whatwebResults.txt
+                cat whatwebResults.txt | awk 'NR%2==0' > numeros.txt  # Extraer los números en un archivo separado
+                cat whatwebResults.txt | awk 'NR%2==1' > argumentos.txt  # Extraer los argumentos en un archivo separado
+                paste -d ' ' argumentos.txt numeros.txt | sed 's/^/    /' > resultado.txt  # Combinar los archivos y dar formato al resultado
+                sed -i -e 's/Title//g' -e 's/Script//g' -e 's/200//g' -e 's/ip//g' -e 's/Country//g' -e 's/Linux//g' -e 's/X-UA-Compatible//g' resultado.txt
+
+
+                while IFS= read -r parameter; do
+                    echo -e "Realizar búsqueda con el parámetro:${azul}$parameter${verde}"
+                        searchsploit "\"$parameter\""
+                        echo
+                done < resultado.txt
+
+            fi
+            # WFUZZ IP
+            echo -e "\n${verde}[+] Realizar Fuzzing ${azul}http://$ip/FUZZ${finColor}${verde}? [s/n] \n"
+            read respuesta2
+            if [ "$respuesta2" = "s" ]; then
+                wfuzz -w /usr/share/wordlists/directory-list-2.3-big.txt --hc 404 http://$ip/FUZZ
+            fi
+        fi
+
+        echo -e "\n[+] Resolviendo Virtual Hosting: ${azul}$ip $name.htb --> /etc/hosts ${finColor}${verde}\n"
+
+        sudo echo "$ip $name.htb" >> /etc/hosts
+
+        # Whatweb Virtual Hosting
+        sudo whatweb "$name.htb"
+        report=$?
+        if [ $report -eq "0"  ]; then
+            # WFUZZ Virtual Hosting
+            echo -e "\n${verde}[+] Realizar Fuzzing ${azul}http://$name.htb/FUZZ${finColor}${verde}: [s/n] \n"
+            read respuesta3
+            if [ "$respuesta3" = "s" ]; then
+                wfuzz -w /usr/share/wordlists/directory-list-2.3-big.txt --hc 404 http://$name.htb/FUZZ
+            fi
+        fi
+
+    fi
+
+    # Puerto 443    
+    if [[ "$ports" == *"443"* ]]; then
+        echo -e "\n${verde}[+] Analizando Puerto ${azul}443 http${finColor}${verde} encontrado:"
+        sudo whatweb "$ip"
+    fi
+        
+    # Puerto 873    
+    if [[ "$ports" == *"873"* ]]; then
+        echo -e "\n${verde}[+] Analizando Puerto ${azul}873 Rsync${finColor}${verde} encontrado: \n"
+        echo -e "\n   [+] Directorios encontrados en la base de datos: ${azul} \n"
+        sudo rsync $ip::
+        
+    fi
+
+    # Puerto 27017    
+    if [[ "$ports" == *"27017"* ]]; then
+        echo -e "\n${verde}[+] Analizando Puerto ${azul}27017 MongoDB${finColor}${verde} encontrado:"
+        mongodump --host $ip --port 27017
+        echo -e "\n[+] La base de datos MognoDB se ha descargado y guardado con el nombre de: ${azul}dump${verde}"
+        rutaflag="$(find ./dump | grep flag.bson)"
+
+        if [[ -n "$rutaflag" ]]; then
+            echo -e "\n[+] Hemos encontrado la palabra flag en la siguiente ruta:\n\n ${azul}${rutaflag}${verde}"
+            catRutaFlag=$(cat $rutaflag | tr -d '\0')
+            echo -e "\n[+] Con el siguiente cotenido:"
+            echo -e "\n ${azul}$catRutaFlag${verde}"
+        fi     
+    fi
 else
     echo -e "\n[+] No se ha podido establecer la conexión. \n"
 fi
+
+
+
